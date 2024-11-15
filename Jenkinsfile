@@ -16,7 +16,7 @@ pipeline{
             steps{
                 script{
                     withCredentials([usernamePassword(credentialsId: 'aiya', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "echo ${PASS} | docker login -u ${USER} passwd --stdin"
+                        sh "echo ${PASS} | docker login -u ${USER}--password-stdin"
                         sh "docker push ${IMAGE_URL}"
                     }
                 }
