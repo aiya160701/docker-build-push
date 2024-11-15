@@ -4,7 +4,7 @@ pipeline{
         DOCKER_HUB_USERNAME = "aiya1607"
         DOCKER_IMAGE_NAME = "myapp"
         DOCKER_TAG = "v:${BUILD_NUMBER}"
-        IMAGE_URL = ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+        IMAGE_URL = "${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
     }
     stages{
         stage('ImageBuild'){
