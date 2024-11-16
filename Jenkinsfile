@@ -32,7 +32,10 @@ pipeline{
     post{
         success{
             echo 'Docker Image is build and pushed'
-            echo 'Triggering CD Pipeline'
+            build 'docker-run',
+                parameters: [
+                    string: (name: 'IMAGE_URL', value: "$IMAGE_URL")
+                ]
         }
         failure{
             echo 'Something went wrong'
