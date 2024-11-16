@@ -29,19 +29,19 @@ pipeline{
             }
         }
     }
-    post{
-        success{
-            echo 'Docker Image Build and Pushed'
-            build job: 'docker-deploy', 
-                parameters: [
-                    string (name: 'IMAGE_URL', value: "$IMAGE_URL")
-                ]
-        }
-        }
-        failure{
-            echo 'Something went wrong'
-        }
-        cleanup{
-            cleanWs()
-        }
+    post {
+    success {
+        echo 'Docker Image Build and Pushed'
+        build job: 'docker-deploy', 
+            parameters: [
+                string(name: 'IMAGE_URL', value: "$IMAGE_URL")
+            ]
+    }
+    failure {
+        echo 'Something went wrong'
+    }
+    cleanup {
+        cleanWs()
+    }
+}
     }
