@@ -34,7 +34,7 @@ pipeline{
             echo 'Docker Image is build and pushed',
             build job 'docker-run'
                 parameters: [
-                    string: (name:'IMAGE_URL', value: "$IMAGE_URL")
+                    string(name:'IMAGE_URL', value: "$IMAGE_URL")
                 ]
         }
         failure{
