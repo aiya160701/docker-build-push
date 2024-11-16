@@ -31,11 +31,12 @@ pipeline{
     }
     post{
         success{
-            echo 'Docker Image is build and pushed',
-            build job 'docker-run'
+            echo 'Docker Image Build and Pushed'
+            build job: 'docker-deploy', 
                 parameters: [
-                    string(name:'IMAGE_URL', value: "$IMAGE_URL")
+                    string (name: 'IMAGE_URL', value: "$IMAGE_URL")
                 ]
+        }
         }
         failure{
             echo 'Something went wrong'
@@ -44,4 +45,3 @@ pipeline{
             cleanWs()
         }
     }
-}
