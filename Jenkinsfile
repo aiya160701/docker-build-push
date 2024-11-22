@@ -14,7 +14,7 @@ pipeline{
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh '''
-                        ssh ubuntu@3.90.240.181 \
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.90.240.181 \
                         $SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectName=demo \
                         -Dsonar.projectKey=demo
