@@ -5,8 +5,21 @@ pipeline{
         DOCKER_IMAGE_NAME = "myapp"
         DOCKER_TAG = "v${BUILD_NUMBER}"
         IMAGE_URL = "${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+        SCANNER_HOME= tool 'sonar-scanner'
     }
+    
     stages{
+        stage("SonarQube Analysis") {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh '''
+                        $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=demo \
+                        -Dsonar.projectKey=demo
+                    '''
+                }
+            }
+        }
         stage('ImageBuild'){
             steps{
                 sh "docker build -t ${IMAGE_URL} ."
