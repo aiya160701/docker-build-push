@@ -5,7 +5,8 @@ pipeline{
         DOCKER_IMAGE_NAME = "myapp"
         DOCKER_TAG = "v${BUILD_NUMBER}"
         IMAGE_URL = "${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-        SCANNER_HOME= tool 'sonar-scanner'
+        SCANNER_HOME = "/opt/sonar-scanner/sonar-scanner-6.2.1.4610"
+        PATH = "${SCANNER_HOME}/bin:$PATH"
     }
     
     stages{
@@ -13,6 +14,7 @@ pipeline{
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh '''
+                        ssh ubuntu@3.90.240.181 \
                         $SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectName=demo \
                         -Dsonar.projectKey=demo
