@@ -7,21 +7,11 @@ pipeline{
         IMAGE_URL = "${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
         SCANNER_HOME = "/opt/sonar-scanner/sonar-scanner-6.2.1.4610"
         PATH = "${SCANNER_HOME}/bin:$PATH"
+        SONARSERVER = 'sonarserver'
+        SONARSCANNER = 'sonarscanner'
     }
     
     stages{
-        stage("SonarQube Analysis") {
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@3.90.240.181 \
-                        $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=demo \
-                        -Dsonar.projectKey=demo
-                    '''
-                }
-            }
-        }
         stage('ImageBuild'){
             steps{
                 sh "docker build -t ${IMAGE_URL} ."
@@ -43,7 +33,18 @@ pipeline{
                 echo "Image removed"
             }
         }
+        stage("SonarQube Analysis") {
+            steps {
+               withSonarQubeEnv("${SONARSERVER}") {
+                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=demo_project \
+                   -Dsonar.projectName=demo_project \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest'''
+              }
+        }
     }
+
     post {
         success {
             echo 'Docker Image Build and Pushed'
