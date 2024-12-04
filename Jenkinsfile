@@ -34,6 +34,9 @@ pipeline{
             }
         }
         stage("SonarQube Analysis") {
+            environment {
+                scannerHome = tool "${SONARSCANNER}"
+            }
             steps {
                withSonarQubeEnv("${SONARSERVER}") {
                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=demo_project \
